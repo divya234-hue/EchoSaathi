@@ -8,7 +8,6 @@ Making communication smarter, simpler, and more accessible through Artificial In
 
 EchoSaathi is an AI-powered communication assistant designed to make digital communication easier and more accessible.
 The project combines speech processing, voice interaction, multilingual communication, and an interactive user interface to create a convenient communication experience.
-
 EchoSaathi focuses on using modern technologies to reduce communication barriers and make voice-based interactions more accessible.
 
 ## 🎯 Vision
