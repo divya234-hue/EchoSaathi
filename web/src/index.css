@@ -1,0 +1,1175 @@
+@import "tailwindcss";
+
+/*
+ * "Halftone Relay" — the chat surface is a dot screen, not a sheet of paper.
+ *
+ * A lattice of round dots is the ground; every panel is a flat hole punched in
+ * it; edges either dissolve into ground-coloured dots or step in chamfers. One
+ * accent marks audio moving: the mascot's arcs, the reply block, the send
+ * button.
+ *
+ * Three grounds, one language (D-015):
+ *   Peacock  — near-black field, acid-lime signal   (the demo frame)
+ *   Lime Wash— bone field, lime signal, dark green ink (daylight)
+ *   Slate    — deep teal field, gold signal          (quiet, evening)
+ *
+ * Contrast is measured per theme, not eyeballed: body text on its ground is
+ * ≥15:1, secondary text ≥8.6:1, reply text on the accent block ≥8.2:1.
+ */
+:root,
+[data-theme="peacock"] {
+  color-scheme: dark;
+  --paper: #0b110a;
+  --surface: #11190f;
+  --surface-2: #1a2416;
+  --line: #26341d;
+  --ink: #f2f5e4;
+  --muted: #c3cfb0;
+  --accent: #c9f05c;
+  --accent-ink: #0e1408;
+  --accent-text: #c9f05c;
+  --accent-soft: #1b2a16;
+  --primary: #c9f05c;
+  --primary-ink: #0e1408;
+  --on-primary-muted: #2b3418;
+  --on-ink-muted: #c3cfb0;
+  --ok: #9fd7b8;
+  --warn: #e4694a;
+  --warn-soft: #3a241b;
+  --lattice: #2b3f21;
+  --shadow-pop: 0 18px 40px -20px rgb(0 0 0 / 0.6);
+}
+
+[data-theme="limewash"] {
+  color-scheme: light;
+  --paper: #f1eddd;
+  --surface: #fbf8ec;
+  --surface-2: #e8e3cf;
+  --line: #d5ceb9;
+  --ink: #17231a;
+  --muted: #3d4b3b;
+  --accent: #b7db4b;
+  --accent-ink: #161b0a;
+  --accent-text: #2f4a16;
+  --accent-soft: #e3e9cf;
+  --primary: #b7db4b;
+  --primary-ink: #161b0a;
+  --on-primary-muted: #39420c;
+  --on-ink-muted: #c6d0c0;
+  --ok: #2c6b4f;
+  --warn: #a54d18;
+  --warn-soft: #f3e2d6;
+  --lattice: #bebba0;
+  --shadow-pop: 0 18px 40px -20px rgb(23 37 28 / 0.35);
+}
+
+[data-theme="slate"] {
+  color-scheme: dark;
+  --paper: #08201e;
+  --surface: #0c2a27;
+  --surface-2: #123530;
+  --line: #1b403b;
+  --ink: #e7f3ee;
+  --muted: #afc8c2;
+  --accent: #e7a93f;
+  --accent-ink: #1a1206;
+  --accent-text: #e7a93f;
+  --accent-soft: #14322e;
+  --primary: #e7a93f;
+  --primary-ink: #1a1206;
+  --on-primary-muted: #3d2c0c;
+  --on-ink-muted: #afc8c2;
+  --ok: #6fd3c4;
+  --warn: #e4694a;
+  --warn-soft: #3a241b;
+  --lattice: #20453e;
+  --shadow-pop: 0 18px 40px -20px rgb(0 0 0 / 0.55);
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-text: var(--accent-text);
+  --color-accent-soft: var(--accent-soft);
+  --color-primary: var(--primary);
+  --color-primary-ink: var(--primary-ink);
+  --color-on-primary-muted: var(--on-primary-muted);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-on-ink-muted: var(--on-ink-muted);
+
+  --font-sans: "Karla", "Mukta", "Noto Sans Bengali", "Noto Sans Tamil",
+    "Noto Sans Telugu", "Noto Sans Kannada", "Noto Sans Malayalam",
+    "Noto Sans Gujarati", "Noto Sans Gurmukhi", "Noto Sans Oriya",
+    ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", "Mukta", "Noto Sans Bengali", "Noto Sans Tamil",
+    "Noto Sans Telugu", "Noto Sans Kannada", "Noto Sans Malayalam",
+    "Noto Sans Gujarati", "Noto Sans Gurmukhi", "Noto Sans Oriya", Georgia,
+    serif;
+  --font-deva: "Mukta", "Noto Sans Bengali", ui-sans-serif, sans-serif;
+  /* Caller-language chips and the transcript: one face per script the
+     recogniser can return, so no text disappears into tofu (D-012). */
+  --font-indic: "Karla", "Mukta", "Noto Sans Bengali", "Noto Sans Tamil",
+    "Noto Sans Telugu", "Noto Sans Kannada", "Noto Sans Malayalam",
+    "Noto Sans Gujarati", "Noto Sans Gurmukhi", "Noto Sans Oriya",
+    ui-sans-serif, sans-serif;
+  /* Micro-labels only: status, latency, labels. Never body copy. */
+  --font-pixel: "Silkscreen", "Courier New", ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    background: var(--paper);
+    color: var(--ink);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 18px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: default;
+    opacity: 0.55;
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+  }
+
+  /* Visible focus for keyboard and switch users. */
+  :focus-visible {
+    outline: 3px solid var(--accent-text);
+    outline-offset: 2px;
+  }
+}
+
+/*
+ * Semantic classes for shapes that appear three or more times. Layout stays in
+ * utilities on the JSX; anything that defines the look of a repeated object
+ * lives here, next to the tokens it reads.
+ */
+@layer components {
+  /* ------------------------------------------------------------------ *
+   * The screen: field, lattice, character
+   * ------------------------------------------------------------------ */
+
+  :root {
+    --pitch: 6px;
+    --dot: calc(var(--pitch) * 0.19);
+  }
+
+  .screen {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--paper);
+    background-image: radial-gradient(
+      circle,
+      var(--lattice) 0 var(--dot),
+      transparent calc(var(--dot) + 0.45px)
+    );
+    background-size: var(--pitch) var(--pitch);
+    background-position: calc(var(--pitch) / 2) calc(var(--pitch) / 2);
+    color: var(--ink);
+  }
+
+  /* Sakhi's head, ghosted on the same lattice. Static by rule. */
+  .peacock-field {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 240ms ease;
+  }
+
+  /* The empty screen belongs to the mascot; the ghost would fight it. */
+  .screen[data-empty="true"] .peacock-field {
+    opacity: 0;
+  }
+
+  /* ------------------------------------------------------------------ *
+   * Header
+   * ------------------------------------------------------------------ */
+
+  .app-top {
+    position: relative;
+    /* Above the toggle strip and the thread, so an open menu is never
+       clipped by a sibling painted later. */
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 12px 8px 13px;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper);
+    background: color-mix(in srgb, var(--paper) 84%, transparent);
+  }
+
+  /* The mark lives on a finer screen than the field; a flat tile keeps the
+     two frequencies from fighting. */
+  .mascot-tile {
+    display: grid;
+    width: 46px;
+    height: 46px;
+    flex: none;
+    place-items: center;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    clip-path: polygon(
+      0 0,
+      calc(100% - 10px) 0,
+      100% 10px,
+      100% 100%,
+      0 100%
+    );
+  }
+
+  .brand {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    line-height: 1;
+  }
+
+  .wordmark {
+    font-family: var(--font-deva);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: 0;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .wordmark-latin {
+    font-family: var(--font-pixel);
+    font-size: 8.5px;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .top-tools {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-left: auto;
+  }
+
+  .status-pill {
+    display: inline-flex;
+    height: 30px;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: 0 9px;
+    font-family: var(--font-indic);
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: 1;
+    color: var(--muted);
+    white-space: nowrap;
+    clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 0 100%);
+  }
+
+  /* Who is calling, masked to its last four digits by the server. It keeps its
+     place when the pill gives up its word on a 360 px phone: the dots say the
+     state, this says who. */
+  .status-caller {
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .status-dots {
+    display: inline-flex;
+    gap: 3px;
+  }
+
+  .status-dots i {
+    display: block;
+    width: 4px;
+    height: 4px;
+    background: var(--ok);
+  }
+
+  .status-pill[data-state="listening"] .status-dots i {
+    background: var(--accent);
+  }
+
+  .status-pill[data-state="thinking"] .status-dots i {
+    background: var(--muted);
+  }
+
+  .status-pill[data-state="speaking"] .status-dots i {
+    background: var(--ink);
+  }
+
+  .status-pill[data-state="error"] .status-dots i,
+  .status-pill[data-state="missed"] .status-dots i {
+    background: var(--warn);
+  }
+
+  .icon-btn {
+    display: inline-grid;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--muted);
+    transition:
+      color 120ms ease,
+      border-color 120ms ease,
+      transform 80ms ease;
+  }
+
+  .icon-btn:hover {
+    color: var(--ink);
+    border-color: var(--line);
+  }
+
+  .icon-btn:active {
+    transform: scale(0.96);
+  }
+
+  /* ------------------------------------------------------------------ *
+   * Demo toggles: dot-track switches, not a settings page
+   * ------------------------------------------------------------------ */
+
+  .toggles {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper);
+    background: color-mix(in srgb, var(--paper) 84%, transparent);
+  }
+
+  .switch {
+    position: relative;
+    display: flex;
+    min-height: 44px;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 0 14px;
+    cursor: pointer;
+  }
+
+  .switch + .switch {
+    border-left: 1px solid var(--line);
+  }
+
+  .switch-text {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .switch-hi {
+    font-family: var(--font-indic);
+    font-size: 15px;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+
+  .switch-en {
+    font-family: var(--font-indic);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+
+  .switch input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  .switch-track {
+    position: relative;
+    width: 38px;
+    height: 20px;
+    flex: none;
+    /* --line is 1.2–1.5:1 on its own field: a control boundary needs more. */
+    border: 1px solid var(--muted);
+    background: transparent;
+  }
+
+  .switch-track::before {
+    content: "";
+    position: absolute;
+    inset: 6px 5px;
+    background-image: radial-gradient(circle, var(--line) 1px, transparent 1.2px);
+    background-size: 5px 5px;
+  }
+
+  .switch-track::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    background: var(--muted);
+    transition:
+      transform 160ms ease,
+      background 160ms ease;
+  }
+
+  .switch:hover .switch-track {
+    border-color: var(--ink);
+  }
+
+  .switch input:checked + .switch-track::after {
+    transform: translateX(18px);
+    background: var(--accent);
+  }
+
+  .switch input:focus-visible + .switch-track {
+    outline: 3px solid var(--accent-text);
+    outline-offset: 2px;
+  }
+
+  /* ------------------------------------------------------------------ *
+   * Thread + bubbles: holes in the lattice, edges dissolving into it
+   * ------------------------------------------------------------------ */
+
+  .app-thread {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px 14px 18px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line) transparent;
+  }
+
+  .turns {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bubble {
+    position: relative;
+    max-width: 92%;
+    padding: 11px 14px 9px;
+    animation: fade-up 0.2s ease-out both;
+  }
+
+  .bubble-caller {
+    background: var(--surface);
+    color: var(--ink);
+    padding-right: 26px;
+  }
+
+  /* Field-coloured dots eat the panel edge: the hole dissolves back into the
+     screen instead of ending in a border. */
+  .bubble-caller::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 22px;
+    background-image: radial-gradient(
+      circle,
+      var(--paper) 2px,
+      transparent 2.3px
+    );
+    background-size: var(--pitch) var(--pitch);
+    mask-image: linear-gradient(to right, #000 0%, transparent 92%);
+    -webkit-mask-image: linear-gradient(to right, #000 0%, transparent 92%);
+    pointer-events: none;
+  }
+
+  .bubble-me {
+    margin-left: auto;
+    background: var(--primary);
+    color: var(--primary-ink);
+    padding-left: 26px;
+  }
+
+  .bubble-me::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 22px;
+    background-image: radial-gradient(
+      circle,
+      var(--paper) 2px,
+      transparent 2.3px
+    );
+    background-size: var(--pitch) var(--pitch);
+    mask-image: linear-gradient(to left, #000 0%, transparent 92%);
+    -webkit-mask-image: linear-gradient(to left, #000 0%, transparent 92%);
+    pointer-events: none;
+  }
+
+  .bubble-text {
+    margin: 0;
+    font-family: var(--font-indic);
+    font-size: 23px;
+    line-height: 1.42;
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+  }
+
+  .bubble-meta {
+    display: block;
+    margin-top: 6px;
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bubble-me .bubble-meta {
+    color: var(--on-primary-muted);
+  }
+
+  /* ------------------------------------------------------------------ *
+   * Empty state
+   * ------------------------------------------------------------------ */
+
+  .empty {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 8px;
+    text-align: center;
+  }
+
+  .empty-title {
+    max-width: 17rem;
+    margin: 8px 0 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 1.32;
+    color: var(--ink);
+  }
+
+  .empty-body {
+    max-width: 19rem;
+    margin: 0;
+    font-family: var(--font-indic);
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  /* ------------------------------------------------------------------ *
+   * A missed segment: a notice, not a bubble
+   * ------------------------------------------------------------------ */
+
+  .retry-notice {
+    display: flex;
+    max-width: 92%;
+    align-items: flex-start;
+    gap: 11px;
+    border: 1px solid var(--warn);
+    background: var(--paper);
+    padding: 10px 12px;
+    animation: fade-up 0.2s ease-out both;
+  }
+
+  .retry-badge {
+    display: grid;
+    width: 26px;
+    height: 26px;
+    flex: none;
+    place-items: center;
+    background: var(--warn);
+    color: var(--paper);
+    font-family: var(--font-indic);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .retry-hi {
+    margin: 0;
+    font-family: var(--font-indic);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+
+  .retry-en {
+    margin: 3px 0 0;
+    font-family: var(--font-indic);
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: 1.35;
+    color: var(--muted);
+  }
+
+  /* Onboarding is a card on the same screen: chamfer, no radius, no glow. */
+  .tour-sheet {
+    width: 100%;
+    max-width: 28rem;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: 24px;
+    box-shadow: var(--shadow-pop);
+    clip-path: polygon(
+      0 0,
+      calc(100% - 18px) 0,
+      100% 18px,
+      100% 100%,
+      0 100%
+    );
+  }
+
+  /* ------------------------------------------------------------------ *
+   * The end-of-call artefact
+   * ------------------------------------------------------------------ */
+
+  .summary-card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: 18px;
+    clip-path: polygon(
+      0 0,
+      calc(100% - 18px) 0,
+      100% 18px,
+      100% 100%,
+      0 100%
+    );
+    animation: fade-up 0.22s ease-out both;
+  }
+
+  .summary-eyebrow {
+    margin: 0;
+    font-family: var(--font-indic);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--accent-text);
+  }
+
+  .summary-title {
+    display: -webkit-box;
+    margin: 9px 0 0;
+    overflow: hidden;
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.32;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .summary-rule {
+    height: 1px;
+    margin: 15px 0;
+    background: var(--line);
+  }
+
+  .summary-row + .summary-row {
+    margin-top: 13px;
+  }
+
+  .summary-label {
+    font-family: var(--font-indic);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--muted);
+  }
+
+  .summary-value {
+    display: -webkit-box;
+    margin: 4px 0 0;
+    overflow: hidden;
+    font-family: var(--font-indic);
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .summary-meta {
+    margin: 16px 0 0;
+    border-top: 1px solid var(--line);
+    padding-top: 11px;
+    font-family: var(--font-indic);
+    font-size: 12.5px;
+    letter-spacing: 0;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .summary-note {
+    margin: 12px 0 0;
+    font-family: var(--font-indic);
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  /* ------------------------------------------------------------------ *
+   * Footer: chips, composer, end call
+   * ------------------------------------------------------------------ */
+
+  .app-foot {
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid var(--line);
+    background: var(--paper);
+    padding: 8px 14px calc(10px + env(safe-area-inset-bottom));
+  }
+
+  .foot-end {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 0 6px;
+  }
+
+  .footer-end {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    gap: 8px;
+    border: 0;
+    background: transparent;
+    padding: 0 2px;
+    font-family: var(--font-indic);
+    font-size: 15px;
+    letter-spacing: 0;
+    color: var(--muted);
+    transition: color 120ms ease;
+  }
+
+  .footer-end:hover {
+    color: var(--ink);
+  }
+
+  .chips {
+    display: flex;
+    gap: 8px;
+    margin: 0 -1px 10px;
+    overflow-x: auto;
+    padding: 0 1px;
+    scrollbar-width: none;
+    mask-image: linear-gradient(to right, #000 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, #000 90%, transparent);
+  }
+
+  .chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .chip {
+    display: inline-flex;
+    min-height: 44px;
+    flex: none;
+    align-items: center;
+    border: 1px solid var(--line);
+    background: transparent;
+    padding: 0 15px;
+    font-family: var(--font-indic);
+    font-size: 18px;
+    color: var(--ink);
+    white-space: nowrap;
+    clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 0 100%);
+    transition: background 120ms ease;
+  }
+
+  .chip:hover {
+    background: var(--surface);
+  }
+
+  .chip:active {
+    transform: translateY(1px);
+  }
+
+  .composer {
+    display: flex;
+    gap: 8px;
+  }
+
+  .composer-input {
+    min-height: 48px;
+    width: 100%;
+    min-width: 0;
+    border: 1px solid var(--line);
+    background: transparent;
+    padding: 0 12px;
+    font-family: var(--font-indic);
+    font-size: 18px;
+    color: var(--ink);
+  }
+
+  .composer-input::placeholder {
+    color: var(--muted);
+  }
+
+  .composer-input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: var(--primary);
+    padding: 0 16px;
+    font-family: var(--font-indic);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary-ink);
+    clip-path: polygon(
+      0 0,
+      calc(100% - 12px) 0,
+      100% 12px,
+      100% 100%,
+      0 100%
+    );
+    transition: transform 80ms ease;
+  }
+
+  .btn-primary:active {
+    transform: translateY(1px);
+  }
+
+  /* Talk mode: the one line above the "Start listening" gesture. */
+  .talk-note {
+    margin-bottom: 10px;
+    font-family: var(--font-indic);
+    font-size: 18px;
+    line-height: 1.45;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* ------------------------------------------------------------------ *
+   * Menus (language + theme): chamfered panel, square rows
+   * ------------------------------------------------------------------ */
+
+  .lang-trigger {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    line-height: 1;
+  }
+
+  .lang-code {
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+
+  .lang-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 50;
+    width: 232px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: 6px;
+    box-shadow: var(--shadow-pop);
+    clip-path: polygon(
+      0 0,
+      calc(100% - 14px) 0,
+      100% 14px,
+      100% 100%,
+      0 100%
+    );
+  }
+
+  .lang-option {
+    display: flex;
+    width: 100%;
+    min-height: 48px;
+    align-items: center;
+    gap: 10px;
+    border: 0;
+    background: transparent;
+    padding: 6px 10px;
+    text-align: left;
+    color: var(--ink);
+  }
+
+  .lang-option:hover {
+    background: var(--surface-2);
+  }
+
+  .lang-option[aria-pressed="true"] {
+    background: var(--accent-soft);
+  }
+
+  .lang-text {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .lang-native {
+    font-family: var(--font-indic);
+    font-size: 18px;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+
+  .lang-label {
+    font-family: var(--font-pixel);
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .lang-check {
+    margin-left: auto;
+    color: var(--accent-text);
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  /* Theme picker */
+  .theme-glyph {
+    display: grid;
+    grid-template-columns: repeat(2, 4px);
+    gap: 3px;
+  }
+
+  .theme-glyph i {
+    display: block;
+    width: 4px;
+    height: 4px;
+    background: var(--ink);
+  }
+
+  .theme-glyph i:nth-child(2),
+  .theme-glyph i:nth-child(3) {
+    background: var(--accent);
+  }
+
+  .theme-option {
+    min-height: 52px;
+  }
+
+  .theme-swatch {
+    display: grid;
+    grid-template-columns: repeat(2, 7px);
+    gap: 3px;
+    padding: 3px;
+    border: 1px solid var(--line);
+  }
+
+  .theme-swatch i {
+    display: block;
+    width: 7px;
+    height: 7px;
+  }
+
+  .theme-swatch[data-theme-swatch="peacock"] {
+    --s1: #c9f05c;
+    --s2: #0b110a;
+    --s3: #11190f;
+    --s4: #f2f5e4;
+  }
+
+  .theme-swatch[data-theme-swatch="limewash"] {
+    --s1: #b7db4b;
+    --s2: #f1eddd;
+    --s3: #fbf8ec;
+    --s4: #17231a;
+  }
+
+  .theme-swatch[data-theme-swatch="slate"] {
+    --s1: #e7a93f;
+    --s2: #08201e;
+    --s3: #0c2a27;
+    --s4: #e7f3ee;
+  }
+
+  .theme-swatch i:nth-child(1) {
+    background: var(--s1);
+  }
+
+  .theme-swatch i:nth-child(2) {
+    background: var(--s2);
+  }
+
+  .theme-swatch i:nth-child(3) {
+    background: var(--s3);
+  }
+
+  .theme-swatch i:nth-child(4) {
+    background: var(--s4);
+  }
+
+  .theme-name {
+    font-family: var(--font-indic);
+    font-size: 18px;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+
+  /* ------------------------------------------------------------------ *
+   * Motion helpers
+   * ------------------------------------------------------------------ */
+
+  .anim-in {
+    animation: fade-up 0.22s ease-out both;
+  }
+}
+
+/* One state pulse for the status dots; nothing decorative. */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dot-wave {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.35;
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes dot-transmit {
+  from {
+    transform: translateX(-2px);
+    opacity: 0.4;
+  }
+  to {
+    transform: translateX(2px);
+    opacity: 1;
+  }
+}
+
+.status-pill[data-state="listening"] .status-dots i {
+  animation: dot-wave 1.25s ease-in-out infinite;
+}
+
+.status-pill[data-state="listening"] .status-dots i:nth-child(2) {
+  animation-delay: 0.16s;
+}
+
+.status-pill[data-state="listening"] .status-dots i:nth-child(3) {
+  animation-delay: 0.32s;
+}
+
+.status-pill[data-state="speaking"] .status-dots i {
+  animation: dot-transmit 0.42s ease-in-out infinite alternate;
+}
+
+.status-pill[data-state="speaking"] .status-dots i:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.status-pill[data-state="speaking"] .status-dots i:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-in,
+  .bubble,
+  .retry-notice,
+  .summary-card,
+  .status-dots i {
+    animation: none !important;
+  }
+
+  .switch-track::after,
+  .icon-btn,
+  .chip,
+  .btn-primary,
+  .footer-end,
+  .peacock-field {
+    transition: none !important;
+  }
+}
+
+/* 430 px is the design width; a 360 px phone still has to fit the header, so
+   the status keeps its dots and gives up its word. */
+@media (max-width: 400px) {
+  .status-pill {
+    padding: 0 8px;
+  }
+
+  .status-pill .status-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .wordmark-latin {
+    display: none;
+  }
+}
