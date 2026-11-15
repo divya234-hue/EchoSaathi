@@ -4,8 +4,6 @@
 
 Making communication smarter, simpler, and more accessible through Artificial Intelligence.
 
----
-
 ## 🌟 About EchoSaathi
 
 EchoSaathi is an AI-powered communication assistant designed to make digital communication easier and more accessible.
