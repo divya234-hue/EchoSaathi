@@ -12,7 +12,6 @@ EchoSaathi focuses on using modern technologies to reduce communication barriers
 ## 🎯 Vision
 
 Our vision is to build technology that makes communication more inclusive.
-
 We aim to develop an intelligent assistant that helps users interact through speech and text while providing a simple, accessible, and user-friendly experience.
 
 ## ✨ Key Features
