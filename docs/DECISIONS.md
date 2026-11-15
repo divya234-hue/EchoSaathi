@@ -430,7 +430,7 @@ hash, so unchanged clips cost nothing.
 toggle. Owner review asked for a "pixel matrix" style: character in the
 background, better bubbles, the peacock drawn in the same style, colour options,
 and an HTML prototype to choose from. The prototype set (`opendesign/mockups/
-pashyanti-pixel-matrix/`) recorded three directions, six palettes, ten bubble
+divya-pixel-matrix/`) recorded three directions, six palettes, ten bubble
 treatments and six backgrounds; the owner picked the dot-screen direction with
 the dot-peacock field, dissolving cards, and three grounds named Peacock, Lime
 Wash and Slate.

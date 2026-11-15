@@ -131,7 +131,7 @@ URL.
 
 ```fish
 # 1. the app (the page a call will attach to)
-cd pashyanti/backend
+cd divya/backend
 set -x EXOTEL_WS_TOKEN (openssl rand -hex 16)
 uv run python server.py
 

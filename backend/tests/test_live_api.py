@@ -2,7 +2,7 @@
 
 It spends credits, so it never runs in CI:
 
-    cd pashyanti/backend
+    cd divya/backend
     RUN_LIVE=1 .venv/bin/python -m unittest tests.test_live_api -v
 
 What it proves that the stubs cannot: the key works, Timbre returns a WAV whose

@@ -26,7 +26,7 @@ organisation id.
   JSON-escaped for non-ASCII:
 
   ```
-  keyterms: ["\u092a\u0936\u094d\u092f\u0928\u094d\u0924\u0940","Pashyanti"]
+  keyterms: ["\u092a\u0936\u094d\u092f\u0928\u094d\u0924\u0940","divya"]
   ```
 
   This fixed the model writing our own product name as `पश्चिंती`.

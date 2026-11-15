@@ -43,7 +43,7 @@ _load_env()
 if "GNANI_API_KEY" not in os.environ:
     raise SystemExit(
         "GNANI_API_KEY is not set.\n"
-        "Put it in pashyanti/.env (or the repo root .env), one line:\n"
+        "Put it in divya/.env (or the repo root .env), one line:\n"
         "    GNANI_API_KEY=your-key-here\n"
         "Or set it for this shell:  set -x GNANI_API_KEY your-key-here   (fish)\n"
         "                           export GNANI_API_KEY=your-key-here  (bash)"

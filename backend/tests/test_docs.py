@@ -12,9 +12,9 @@ import re
 import unittest
 from pathlib import Path
 
-PASHYANTI = Path(__file__).resolve().parents[2]      # .../pashyanti
-TYPES = PASHYANTI / "web" / "src" / "types.ts"
-ARCHITECTURE = PASHYANTI / "docs" / "ARCHITECTURE.md"
+divya = Path(__file__).resolve().parents[2]      # .../divya
+TYPES = divya / "web" / "src" / "types.ts"
+ARCHITECTURE = divya / "docs" / "ARCHITECTURE.md"
 
 # | server | `hello` | ... |   or   | client | `reply` | ... |
 _ROW = re.compile(r"^\|\s*(?:server|client)\s*\|\s*`([a-z_]+)`\s*\|", re.MULTILINE)

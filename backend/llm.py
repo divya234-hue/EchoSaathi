@@ -11,7 +11,7 @@ Verified facts (14 Nov 2026):
   API answers `400 MissingSessionID`.
 - `https://opencode.ai/zen/v1` is pay-as-you-go and answered `402` with this key;
   the `-free` model answered `429`. The Go endpoint answered `200` in ~3 s.
-- Key: `LLM_API_KEY` in `pashyanti/backend/.env` (gitignored). It never leaves
+- Key: `LLM_API_KEY` in `divya/backend/.env` (gitignored). It never leaves
   this process — not to the browser, not into a log line, not into a message.
 - `deepseek-v4.1-flash` is a **reasoning** model: with its default thinking on,
   a one-line answer spends 300–400 reasoning tokens and takes 4–7 s. Sending
@@ -39,7 +39,7 @@ BASE = os.environ.get("LLM_BASE_URL",
 MODEL = os.environ.get("LLM_MODEL", "deepseek-v4.1-flash")
 TIMEOUT = float(os.environ.get("LLM_TIMEOUT", "6"))
 # Stable for the process; one conversation per server run in this build.
-SESSION = os.environ.get("LLM_SESSION") or f"pashyanti-{uuid.uuid4().hex[:8]}"
+SESSION = os.environ.get("LLM_SESSION") or f"divya-{uuid.uuid4().hex[:8]}"
 
 # For the prompt only: the model is told the language, not a code it must guess.
 _LANGUAGES = {

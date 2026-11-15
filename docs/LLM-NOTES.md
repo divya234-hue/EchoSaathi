@@ -5,7 +5,7 @@ can write a *contextual* reply chip in that language. One short chat completion
 does, and this file records what was verified about that endpoint so nobody has
 to rediscover it. Nothing here is Gnani's API; `API-NOTES.md` is Gnani.
 
-The key is `LLM_API_KEY` in `pashyanti/backend/.env` (gitignored), read by
+The key is `LLM_API_KEY` in `divya/backend/.env` (gitignored), read by
 `backend/llm.py`. It never leaves the server: not into the page, not into a log
 line, not into a message.
 
@@ -22,7 +22,7 @@ line, not into a message.
   `deepseek-v4.1-flash-free` model answers **429** (free-tier limit). The Go
   endpoint answers **200**, and the response's `billing_source` says `go`.
 - The session header is generated once per server process
-  (`pashyanti-<8 hex>`), so a conversation keeps one session and a restart gets
+  (`divya-<8 hex>`), so a conversation keeps one session and a restart gets
   a fresh one. A header is not a secret; it is a routing/session hint.
 - The model is a **reasoning** model. With its default thinking on, a one-line
   answer spends 300–400 reasoning tokens and takes **4–7 s**; with
@@ -109,7 +109,7 @@ chunks / 69,120 bytes = 2.16 s of Bengali PCM** (`lang: bn-IN`).
   first-person verbs. The app has no persona profile, so a chip can use the
   wrong one (`आ जाऊँगा` vs `आ जाऊँगी`). The composer is there to edit it.
 - **Register.** The model can be blunt (`नमस्ते, मैं बधिर हूँ।` for "hello, I am
-  Pashyanti"). It is a suggestion, not a script.
+  divya"). It is a suggestion, not a script.
 - **No memory of who the user is.** Three lines of context, nothing else.
 - The model is a third party: a line of the conversation leaves the machine.
   The two safety chips do not depend on it, and `LLM_API_KEY` can simply be
@@ -118,7 +118,7 @@ chunks / 69,120 bytes = 2.16 s of Bengali PCM** (`lang: bn-IN`).
 ## Reproduce
 
 ```fish
-cd pashyanti/backend
+cd divya/backend
 uv run python -c "import llm; print(llm.available())"   # True/False, never the key
 uv run python -m unittest tests.test_llm tests.test_chips
 ```

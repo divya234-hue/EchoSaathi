@@ -1,9 +1,9 @@
-"""Pashyanti server: one process, one port.
+"""divya server: one process, one port.
 
 Serves the built React app, owns the microphone (or relays the page's), and
 relays Gnani calls.
 
-    cd pashyanti/backend
+    cd divya/backend
     uv run python server.py          # http://localhost:8080
     uv run python server.py --tls cert.pem key.pem   # https:// (talk mode off-LAN)
 
@@ -12,7 +12,7 @@ AudioWorklet, sends 1024-byte frames over /ws, and plays Timbre's reply itself.
 That path needs a secure context (HTTPS or localhost) for `getUserMedia`.
 
 Development (hot reload) runs Vite separately:
-    cd pashyanti/web && bun run dev  # http://localhost:5173, proxies /ws here
+    cd divya/web && bun run dev  # http://localhost:5173, proxies /ws here
 """
 import asyncio
 import base64
@@ -67,8 +67,8 @@ SUMMARY_LLM = _summary_llm_enabled()
 
 NO_BUILD = """<!doctype html><meta charset=utf-8><body style="font:16px system-ui;
 padding:40px;background:#0f1115;color:#eef1f6">
-<h2>Pashyanti</h2><p>Frontend not built yet.</p>
-<pre>cd pashyanti/web &amp;&amp; bun run build</pre>
+<h2>divya</h2><p>Frontend not built yet.</p>
+<pre>cd divya/web &amp;&amp; bun run build</pre>
 <p>Or run the dev server: <code>bun run dev</code> → http://localhost:5173</p>
 """
 
@@ -544,7 +544,7 @@ if __name__ == "__main__":
             else "clean (16 kHz)")
     ctx = tls_context()
     scheme = "https" if ctx else "http"
-    print(f"Pashyanti on {scheme}://0.0.0.0:{PORT}  "
+    print(f"divya on {scheme}://0.0.0.0:{PORT}  "
           f"(phone: {scheme}://<your-lan-ip>:{PORT})")
     print(f"microphone mode: {mode}")
     print(f"talk mode: {scheme}://<host>:{PORT}/?mode=talk "

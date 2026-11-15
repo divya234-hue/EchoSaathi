@@ -1,7 +1,7 @@
 [project]
-name = "pashyanti-backend"
+name = "divya-backend"
 version = "0.1.0"
-description = "Pashyanti — speech relay for people who can't hear or can't speak"
+description = "EchoSaathi â€” speech relay for people who can't hear or can't speak"
 requires-python = ">=3.12"
 dependencies = [
     "aiohttp>=3.9",
@@ -10,3 +10,4 @@ dependencies = [
     "sounddevice>=0.4.6",
     "numpy>=1.26",
 ]
+

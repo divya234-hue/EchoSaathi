@@ -22,7 +22,7 @@ PCM = b"\x01\x00" * 3000            # 6000 bytes of s16le
 
 class StreamPcmTest(unittest.IsolatedAsyncioTestCase):
     def setUp(self):
-        self.tmp = tempfile.mkdtemp(prefix="pashyanti-stream-")
+        self.tmp = tempfile.mkdtemp(prefix="divya-stream-")
         self.addCleanup(shutil.rmtree, self.tmp, True)
         old_cache, old_embedding = tts.CACHE_DIR, tts.EMBEDDING
         tts.CACHE_DIR = self.tmp

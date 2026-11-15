@@ -34,7 +34,7 @@ const THEME_COLOURS: Record<Theme, string> = {
   slate: "#08201e",
 };
 
-const KEY = "pashyanti.theme";
+const KEY = "divya.theme";
 
 function isTheme(value: string | null): value is Theme {
   return value !== null && (THEMES as readonly string[]).includes(value);

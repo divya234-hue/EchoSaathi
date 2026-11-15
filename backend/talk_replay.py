@@ -4,7 +4,7 @@ Talk mode (`?mode=talk`) takes 1024-byte frames from the browser and streams the
 reply back as `audio` messages. This client speaks that same protocol, so the
 path can be checked on a machine with no browser and no phone:
 
-    cd pashyanti/backend
+    cd divya/backend
     uv run python server.py                      # terminal 1
     uv run python talk_replay.py smoke.wav       # terminal 2
 

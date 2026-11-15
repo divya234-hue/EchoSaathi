@@ -1,6 +1,6 @@
-{
-  "name": "Pashyanti",
-  "short_name": "Pashyanti",
+﻿{
+  "name": "EchoSaathi",
+  "short_name": "EchoSaathi",
   "description": "A phone assistant for people who can't hear, can't speak, or both.",
   "start_url": "/",
   "display": "standalone",
@@ -16,3 +16,4 @@
     }
   ]
 }
+

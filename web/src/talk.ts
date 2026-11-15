@@ -14,7 +14,7 @@
  */
 
 const WORKLET = `
-class PashyantiCapture extends AudioWorkletProcessor {
+class divyaCapture extends AudioWorkletProcessor {
   constructor() {
     super();
     this.ratio = sampleRate / 16000;
@@ -52,7 +52,7 @@ class PashyantiCapture extends AudioWorkletProcessor {
     return true;
   }
 }
-registerProcessor("pashyanti-capture", PashyantiCapture);
+registerProcessor("divya-capture", divyaCapture);
 `;
 
 export type TalkOptions = {
@@ -109,7 +109,7 @@ export class Talk {
       );
       try {
         await ctx.audioWorklet.addModule(url);
-        node = new AudioWorkletNode(ctx, "pashyanti-capture", {
+        node = new AudioWorkletNode(ctx, "divya-capture", {
           numberOfInputs: 1,
           numberOfOutputs: 1,
           outputChannelCount: [1],

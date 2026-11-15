@@ -46,7 +46,7 @@ HDR = {
     **VAD,
     # Word boosting, same rules as REST. Non-ASCII must be
     # JSON-escaped, which is what ensure_ascii does.
-    "keyterms": json.dumps(["पश्यन्ती", "Pashyanti"], ensure_ascii=True),
+    "keyterms": json.dumps(["पश्यन्ती", "divya"], ensure_ascii=True),
 }
 
 

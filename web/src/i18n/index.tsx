@@ -15,7 +15,7 @@ import { LOCALES, type Locale } from "./locales";
 import type { Messages } from "./types";
 
 const DICTS: Record<Locale, Messages> = { en, hi, bn, mr };
-const STORAGE_KEY = "pashyanti.lang";
+const STORAGE_KEY = "divya.lang";
 
 function isLocale(value: string | null): value is Locale {
   return value !== null && LOCALES.some((l) => l.code === value);

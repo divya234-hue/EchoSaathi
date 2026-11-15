@@ -1,10 +1,10 @@
-# Pashyanti — backend
+# divya — backend
 
 Python 3.12+ / asyncio. Serves the built frontend, owns the microphone (or relays
 the page's, in talk mode), relays Gnani.
 
 ```fish
-cd pashyanti/backend
+cd divya/backend
 cp .env.example .env      # paste your GNANI_API_KEY
 uv sync
 uv run python server.py   # http://localhost:8080

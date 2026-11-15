@@ -2,7 +2,7 @@
 
 The submission is a video and a post, judged on engagement and on whether the
 claims survive a look at the repository. This file is the shoot script: someone
-who has never seen Pashyanti should be able to record the video from it without
+who has never seen divya should be able to record the video from it without
 asking a question.
 
 Two rules decide every choice below.
@@ -25,7 +25,7 @@ Related: [`ARCHITECTURE.md`](ARCHITECTURE.md) (the latency budget),
 |---|---|---|
 | 1 | The caller's speech becomes large live text on the user's screen | `web/src/App.tsx` — `transcript` → caller bubble |
 | 2 | A tap becomes speech down the line, optionally in the user's cloned voice | `server.Call.on_reply` → `tts.speak(mode="cloned")` |
-| 3 | On a simulated phone line the text still lands | 3.6% WER at 10 dB SNR, `pashyanti/backend/harness_report.json` |
+| 3 | On a simulated phone line the text still lands | 3.6% WER at 10 dB SNR, `divya/backend/harness_report.json` |
 | 4 | When the audio is unusable it asks for a repeat instead of guessing | `stt.looks_unusable` → `{"type":"retry"}` |
 | 5 | The call ends as a record, not a chat | `server.build_summary` → `SummaryCard` |
 
@@ -61,7 +61,7 @@ expensive to discover mid-take.
 ### 1. Serve the built app, not the dev server
 
 ```fish
-cd pashyanti/web && ../../scripts/with-cache.sh bun run build   # must end clean
+cd divya/web && ../../scripts/with-cache.sh bun run build   # must end clean
 cd ../backend && ../../scripts/with-cache.sh uv run python server.py
 ```
 
@@ -74,7 +74,7 @@ shooting the dev server (#14 lists this as a blocker).
 ### 2. Build the cloned voice and restart the server
 
 ```fish
-cd pashyanti/backend
+cd divya/backend
 uv run python clone_voice.py build ref.wav   # 5–30 s, one speaker, clean
 ```
 
@@ -82,7 +82,7 @@ uv run python clone_voice.py build ref.wav   # 5–30 s, one speaker, clean
 speaker, no music. A cloned voice that is not the person on camera is the one
 thing a judge will spot, and it makes beat 7 a lie.
 
-This writes `pashyanti/backend/embedding.json`. `tts.EMBEDDING` is loaded **at
+This writes `divya/backend/embedding.json`. `tts.EMBEDDING` is loaded **at
 import**, so restart the server afterwards. Check without printing the
 embedding:
 
@@ -185,7 +185,7 @@ persona with a male verb is the kind of detail a Hindi-speaking judge hears.
 
 ### Opening line — write it ten times, shoot three
 
-The opening names a person and a failure. It never names Pashyanti. Candidates,
+The opening names a person and a failure. It never names divya. Candidates,
 in the order worth trying:
 
 1. **"The clinic called at 9:04. Meera watched the phone ring, and could not
@@ -227,7 +227,7 @@ from the voiceover, never a frame from the transcript.
 | 6 | 0:34–0:39 | A short noise burst at the mic. The `?` disc, then "समझ नहीं आया — दोहराइए". Hold ≥ 2 s. | Room | "When it isn't sure, it asks — it does not guess." |
 | 7 | 0:39–0:47 | Caller: **"कल सुबह दस बजे का अपॉइंटमेंट खाली है।"** — the bubble clears the retry card. She flips **मेरी आवाज़**, taps **बोलिए** on the pre-filled U2; the reply is spoken in her cloned voice. | Caller, then her cloned voice | "The appointment is free. She says yes — in her own voice." |
 | 8 | 0:47–0:55 | Caller says A4; text lands; she taps **कॉल खत्म करें**; the summary card slides in — `who` (A1), `agreed` (A4), `next` (U2), then `<turns> बार · <duration>`. Hold the card: about two seconds in, the model may replace those three lines with its own wording of the same facts (or not, if `SUMMARY_LLM=0`). Either card is honest; do not cut between them. | Caller, then UI | "And the call ends as a record, not a chat." |
-| 9 | 0:55–1:00 | End card: **Pashyanti · Prisma v3.0 + Timbre v3.0**, then `3.6% WER · 764 ms`, the limitation line, the repo URL. | One music sting | "Overlapping speech still breaks it. You can't interrupt the reply." |
+| 9 | 0:55–1:00 | End card: **divya · Prisma v3.0 + Timbre v3.0**, then `3.6% WER · 764 ms`, the limitation line, the repo URL. | One music sting | "Overlapping speech still breaks it. You can't interrupt the reply." |
 
 **Total: 5 + 6 + 8 + 6 + 9 + 5 + 8 + 8 + 5 = 60 s.**
 
@@ -295,7 +295,7 @@ in this table, it is not in the video.
 
 | Claim | Value | Source | Reproduce |
 |---|---|---|---|
-| Word error rate, phone line | **3.6%** (3.57% in the JSON) | `pashyanti/backend/harness_report.json` → `summary[1].wer` = `0.0357`; table in `harness_report.md` | `cd pashyanti/backend && uv run python -m harness.cli` |
+| Word error rate, phone line | **3.6%** (3.57% in the JSON) | `divya/backend/harness_report.json` → `summary[1].wer` = `0.0357`; table in `harness_report.md` | `cd divya/backend && uv run python -m harness.cli` |
 | Character error rate, phone line | **2.9%** | same file → `summary[1].cer` = `0.0295` | same |
 | Conditions | 8 clips, `hi-IN`, 300–3400 Hz band-limit, 8 kHz resample, G.711 µ-law, noise added at **10 dB SNR**; the reference clips are synthesised from known text, so the reference is exact and the audio is not a human recording | `harness_report.md` header; `harness/degrade.py`; `harness/corpus.py` | same |
 | Worse conditions | 27.8% at 5 dB, **93.5% at 0 dB** (and the model writes plausible text from noise) | `summary[2]`, `summary[3]`; `API-NOTES.md` §Measured results | same |
@@ -303,7 +303,7 @@ in this table, it is not in the video.
 | The small print under a bubble | the API's own `latency` field, measured **57–211 ms** | `DECISIONS.md` D-004; `stt.py` reads `d["latency"]` | every transcript message carries it |
 | Tap → first audio, uncached | **764 ms** streaming; ~2.5 s for the same sentence over REST | `API-NOTES.md` §Text-to-speech ("SSE is worth it") | one uncached reply with the app on screen |
 | Tap → first audio, cached | **~0 ms** | `ARCHITECTURE.md` §Latency budget | repeat the same chip twice |
-| Default reply voice | `Shivani`, Timbre v3.0; cloned replies use `vachana-vc-v1` | `pashyanti/backend/tts.py` (`VOICE`, `MODEL`, `MODEL_CLONE`) | `tts.speak(..., mode="cloned")` |
+| Default reply voice | `Shivani`, Timbre v3.0; cloned replies use `vachana-vc-v1` | `divya/backend/tts.py` (`VOICE`, `MODEL`, `MODEL_CLONE`) | `tts.speak(..., mode="cloned")` |
 
 Issue #13 wrote these as "~550 ms" and "~760 ms". Those are roundings of
 450–600 ms and 764 ms; the video uses the measured values from the table, and

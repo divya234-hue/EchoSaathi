@@ -25,7 +25,7 @@ Prisma/Timbre calls; it opens no audio device.
 
 ```fish
 # 1. the built app + server (no --phone-line for a first check)
-cd pashyanti/web && ../../scripts/with-cache.sh bun run build
+cd divya/web && ../../scripts/with-cache.sh bun run build
 cd ../backend && ../../scripts/with-cache.sh uv run python server.py
 
 # 2. a secure context — getUserMedia needs one; http://<lan-ip> does not count
@@ -124,7 +124,7 @@ while the reply played, so the phone did not hear itself.
 ## Reproduce A
 
 ```fish
-cd pashyanti/backend
+cd divya/backend
 uv run python server.py                        # terminal 1
 uv run python talk_replay.py smoke.wav         # terminal 2, ~25 s
 ```

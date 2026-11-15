@@ -1,5 +1,5 @@
-/**
- * Pashyanti — one screen: the caller's words, the user's replies, and Sakhi.
+﻿/**
+ * EchoSaathi â€” one screen: the caller's words, the user's replies, and Sakhi.
  *
  * The call ends on an artefact, not a chat bubble: `end_call` asks the backend
  * for `summary` (#4), and the card replaces the transcript. `new_call` clears
@@ -22,7 +22,7 @@ import { Talk, TalkError } from "./talk";
 import type { CallMode, Line, ServerMsg, Summary } from "./types";
 import { useSocket } from "./ws";
 
-/** Server state → mascot face. The mascot is the state indicator, not decoration. */
+/** Server state â†’ mascot face. The mascot is the state indicator, not decoration. */
 function face(state: string): MascotState {
   if (state.startsWith("error")) return "unsure";
   if (state === "speaking") return "speaking";
@@ -150,7 +150,7 @@ export default function App() {
           // The tap already put this line on screen (`reply` below); `speak`
           // arrives after the audio has been synthesised and played out, which
           // can be seconds. Only append when the server speaks something the
-          // page did not echo — a chip reply, or a stale one.
+          // page did not echo â€” a chip reply, or a stale one.
           const echo = pendingEcho.current;
           pendingEcho.current = null;
           setLines((prev) => {
@@ -321,9 +321,9 @@ export default function App() {
         </span>
         <div className="brand">
           <h1 className="wordmark" lang="hi">
-            पश्यन्ती
+            à¤ªà¤¶à¥à¤¯à¤¨à¥à¤¤à¥€
           </h1>
-          <p className="wordmark-latin">Pashyanti</p>
+          <p className="wordmark-latin">EchoSaathi</p>
         </div>
 
         <div className="top-tools">
@@ -408,7 +408,7 @@ export default function App() {
                 </p>
                 {line.who === "caller" && line.latency_ms !== undefined && (
                   <small className="bubble-meta">
-                    {line.lang} · {line.latency_ms} ms
+                    {line.lang} Â· {line.latency_ms} ms
                   </small>
                 )}
               </li>
@@ -504,3 +504,4 @@ export default function App() {
     </div>
   );
 }
+

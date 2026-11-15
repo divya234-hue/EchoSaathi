@@ -37,7 +37,7 @@ def headers(lang="indic-auto", rate=16000, telephony=False):
         "format": "transcribe",
         "x-sample-rate": str(rate),
         "x-max-speech-s": "15",
-        "keyterms": json.dumps(["पश्यन्ती", "Pashyanti"], ensure_ascii=True),
+        "keyterms": json.dumps(["पश्यन्ती", "divya"], ensure_ascii=True),
         **vad,
     }
 

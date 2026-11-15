@@ -1,4 +1,4 @@
-"""Phone-line accuracy harness for Pashyanti.
+"""Phone-line accuracy harness for divya.
 
     degrade.py  clean audio -> what a phone line does to it (pure numpy)
     wer.py      Indic-aware normalisation, WER and CER (pure)

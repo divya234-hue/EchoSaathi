@@ -114,7 +114,7 @@ class ServerIntegrationTest(SocketTestBase):
     async def test_index_is_served(self):
         resp = await self.client.get("/")
         self.assertEqual(resp.status, 200)
-        self.assertIn("Pashyanti", await resp.text())
+        self.assertIn("divya", await resp.text())
 
     # --- websocket protocol ----------------------------------------------
 

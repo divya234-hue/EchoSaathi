@@ -18,7 +18,7 @@ import tts  # noqa: E402
 
 class SpeakModeTest(unittest.IsolatedAsyncioTestCase):
     def setUp(self):
-        self.tmp = tempfile.mkdtemp(prefix="pashyanti-tts-")
+        self.tmp = tempfile.mkdtemp(prefix="divya-tts-")
         self.addCleanup(shutil.rmtree, self.tmp, True)
         old_cache, old_embedding = tts.CACHE_DIR, tts.EMBEDDING
         tts.CACHE_DIR = self.tmp
@@ -101,7 +101,7 @@ class LanguageTest(unittest.IsolatedAsyncioTestCase):
     """The reply follows the caller's language, not the UI locale (D-012)."""
 
     def setUp(self):
-        self.tmp = tempfile.mkdtemp(prefix="pashyanti-tts-lang-")
+        self.tmp = tempfile.mkdtemp(prefix="divya-tts-lang-")
         self.addCleanup(shutil.rmtree, self.tmp, True)
         old_cache, old_embedding = tts.CACHE_DIR, tts.EMBEDDING
         tts.CACHE_DIR = self.tmp
