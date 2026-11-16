@@ -1,5 +1,4 @@
 # EchoSaathi 🎙️
-
 ### AI-Powered Communication Assistant
 
 Making communication smarter, simpler, and more accessible through Artificial Intelligence.
